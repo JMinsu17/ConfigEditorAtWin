@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigEditor.Core\ConfigEditor.Core.csproj" />
+    <ProjectReference Include="..\ConfigEditor.Formats\ConfigEditor.Formats.csproj" />
+    <ProjectReference Include="..\ConfigEditor.Infrastructure\ConfigEditor.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.3.1.120" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\*.otf" />
+    <None Remove="icon\CE_64px.png" />
+    <None Remove="icon\ConfigEditor.ico" />
+    <Resource Include="Fonts\*.otf" />
+    <Resource Include="icon\CE_64px.png" />
+    <Resource Include="icon\ConfigEditor.ico" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon\ConfigEditor.ico</ApplicationIcon>
+  </PropertyGroup>
+
+</Project>

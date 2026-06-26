@@ -1,0 +1,174 @@
+<UserControl x:Class="ConfigEditor.App.Views.ConfigFormEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:ConfigEditor.App.ViewModels"
+             xmlns:conv="clr-namespace:ConfigEditor.App.Theme"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500">
+    <UserControl.Resources>
+        <conv:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <Border Background="{DynamicResource PanelBgBrush}" Padding="20">
+        <Grid>
+            <!-- Default State: Nothing selected -->
+        <TextBlock Text="왼쪽 문서 구조에서 편집할 설정 항목을 선택하세요."
+                   Foreground="{DynamicResource FgMutedBrush}" 
+                   FontStyle="Italic"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="14"
+                   x:Name="EmptyStateText"/>
+
+        <!-- Form Editor Panel -->
+        <ScrollViewer x:Name="FormScrollViewer" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+            <StackPanel>
+                <!-- Header -->
+                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,15" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock x:Name="NodePathText" Text="Root" Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,5"/>
+                        <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="NodeNameText" Text="설정 항목" Foreground="{DynamicResource FgBrush}" FontSize="18" FontWeight="ExtraBold" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="ModifiedStarText" Text=" *" Foreground="{DynamicResource WarningBrush}" FontSize="18" FontWeight="Bold" Visibility="Collapsed" VerticalAlignment="Center"/>
+                            <Border x:Name="NodeTemplateTypeBadge" CornerRadius="3" Padding="5,2" Background="{DynamicResource AccentBrush}" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock x:Name="NodeTemplateTypeText" Text="string" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock x:Name="NodeDescriptionText" Text="Description..." Foreground="{DynamicResource FgMutedBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Original Value & Revert Panel (Top) -->
+                <Border x:Name="RevertPanel" Background="{DynamicResource SelectionInactiveBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="12,8" Margin="0,0,0,15" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="원래 값" Foreground="{DynamicResource FgMutedBrush}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBlock x:Name="OriginalValueText" Text="" Foreground="{DynamicResource FgMutedBrush}" FontWeight="SemiBold" FontSize="13" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="되돌리기" x:Name="RevertButton" Click="RevertButton_Click" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- Children List Editor (If Object or Array) -->
+                <StackPanel x:Name="SectionEditorPanel" Visibility="Collapsed">
+                    <TextBlock Text="하위 설정" Foreground="{DynamicResource FgMutedBrush}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <ItemsControl x:Name="ChildrenItemsControl" Margin="0,0,0,10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                <Grid Margin="0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Key}" Foreground="{DynamicResource FgBrush}" FontWeight="SemiBold" ToolTip="{Binding Path}"/>
+                                        <TextBlock Text=" *" Foreground="{DynamicResource WarningBrush}" FontWeight="Bold" Visibility="{Binding IsModified, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    </StackPanel>
+
+                                    <!-- Dynamic editor control -->
+                                    <ContentControl Grid.Column="1" Focusable="False" Content="{Binding}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="ContentControl">
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ValueType}" Value="Boolean">
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                                    <CheckBox IsChecked="{Binding Value, Converter={StaticResource StringToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" Content="사용"/>
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ValueType}" Value="Object">
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                                    <TextBlock Text="[객체: 하위 항목은 왼쪽 트리에서 선택]" Foreground="{DynamicResource FgMutedBrush}" FontStyle="Italic" VerticalAlignment="Center"/>
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ValueType}" Value="Array">
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                                    <TextBlock Text="[배열: 항목은 왼쪽 트리에서 선택]" Foreground="{DynamicResource FgMutedBrush}" FontStyle="Italic" VerticalAlignment="Center"/>
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                    </ContentControl>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Single Leaf Editor (If String, Number, Boolean, Null, etc.) -->
+                <StackPanel x:Name="SingleEditorPanel" Visibility="Collapsed">
+                    <Grid Margin="0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Text="값" Foreground="{DynamicResource FgBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        
+                        <ContentControl x:Name="SingleValueContentControl" Grid.Column="1" Focusable="False">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ValueType}" Value="Boolean">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                        <CheckBox IsChecked="{Binding Value, Converter={StaticResource StringToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" Content="사용"/>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ValueType}" Value="Null">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate DataType="{x:Type vm:ConfigNodeViewModel}">
+                                                        <TextBlock Text="null" Foreground="{DynamicResource FgMutedBrush}" FontStyle="Italic" VerticalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>
