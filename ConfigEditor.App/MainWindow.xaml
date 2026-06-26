@@ -872,7 +872,11 @@
             </StatusBarItem>
             <Separator Background="{DynamicResource BorderBrush}"/>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding SelectedDocument.Format, StringFormat='형식: {0}', FallbackValue='형식: 없음'}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding AppVersion, StringFormat='버전: {0}'}"/>
+                    <TextBlock Text="  |  "/>
+                    <TextBlock Text="{Binding SelectedDocument.Format, StringFormat='형식: {0}', FallbackValue='형식: 없음'}"/>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>

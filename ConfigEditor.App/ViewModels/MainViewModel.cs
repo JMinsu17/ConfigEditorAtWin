@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -64,6 +65,8 @@ public partial class MainViewModel : ObservableObject
 
     public bool HasRecentFiles => RecentFilesList.Count > 0;
 
+    public string AppVersion { get; } = $"v{GetAppVersion()}";
+
     public MainViewModel(
         DialogService dialogService,
         RecentFileService recentFileService,
@@ -96,6 +99,15 @@ public partial class MainViewModel : ObservableObject
                 OnPropertyChanged(nameof(HasSelectedDocument));
             }
         };
+    }
+
+    private static string GetAppVersion()
+    {
+        var version = typeof(MainViewModel).Assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion;
+
+        return string.IsNullOrWhiteSpace(version) ? "1.0.0" : version;
     }
 
     private void Documents_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
