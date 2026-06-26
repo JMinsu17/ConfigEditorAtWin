@@ -44,7 +44,7 @@
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="{DynamicResource HoverBgBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -64,7 +64,7 @@
                                     <Setter TargetName="SeverityText" Property="Text" Value="경고"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Severity}" Value="{x:Static models:ValidationSeverity.Info}">
-                                    <Setter TargetName="SeverityIndicator" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                    <Setter TargetName="SeverityIndicator" Property="Background" Value="{DynamicResource PrimaryBrush}"/>
                                     <Setter TargetName="SeverityText" Property="Text" Value="정보"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>

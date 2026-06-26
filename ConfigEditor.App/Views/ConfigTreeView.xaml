@@ -6,7 +6,7 @@
              xmlns:vm="clr-namespace:ConfigEditor.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
-    <Grid Background="{DynamicResource PanelBgBrush}">
+    <Grid Background="{DynamicResource SurfaceBrush}">
         <TreeView ItemsSource="{Binding SelectedDocument.Nodes}"
                   SelectedItemChanged="TreeView_SelectedItemChanged"
                   BorderThickness="0"
@@ -28,35 +28,35 @@
                     </StackPanel>
                     <HierarchicalDataTemplate.Triggers>
                         <DataTrigger Binding="{Binding ValueType}" Value="String">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#262682"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource PrimaryBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="str"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Integer">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#DA9274"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource AccentBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="int"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Float">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#B8738D"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="flt"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Boolean">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#6969B8"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="bool"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Object">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#1B1B66"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource PrimaryPressedBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="obj"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Array">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#C47F66"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="arr"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Null">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#77728A"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource TextMutedBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="null"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueType}" Value="Unknown">
-                            <Setter TargetName="TypeBadge" Property="Background" Value="#77728A"/>
+                            <Setter TargetName="TypeBadge" Property="Background" Value="{DynamicResource TextMutedBrush}"/>
                             <Setter TargetName="TypeText" Property="Text" Value="unk"/>
                         </DataTrigger>
                     </HierarchicalDataTemplate.Triggers>

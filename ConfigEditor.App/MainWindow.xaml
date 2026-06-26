@@ -12,50 +12,51 @@
         Height="900"
         MinWidth="1040"
         MinHeight="760"
-        Background="{DynamicResource BgBrush}"
+        Background="{DynamicResource AppBackgroundBrush}"
         FontFamily="{StaticResource MainFont}"
         Icon="icon/ConfigEditor.ico"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <conv:PathFileNameConverter x:Key="PathFileNameConverter"/>
+        <conv:PathFolderConverter x:Key="PathFolderConverter"/>
 
         <Style x:Key="SectionLabelTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource FgMutedBrush}"/>
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <Style x:Key="PaneBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="{DynamicResource PanelBgBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="CornerRadius" Value="8"/>
         </Style>
 
-        <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryButtonStyle}">
             <Setter Property="MinWidth" Value="84"/>
-            <Setter Property="Height" Value="34"/>
-            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style x:Key="PrimaryToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="MinWidth" Value="84"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="18,6"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
-        <Style x:Key="PrimaryToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource ToolbarButtonStyle}">
-            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
+        <Style x:Key="AccentSoftToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentSoftButtonStyle}">
+            <Setter Property="MinWidth" Value="84"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <Style x:Key="CompactToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -77,14 +78,50 @@
         </Style>
 
         <Style x:Key="RecentFileButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="MinHeight" Value="28"/>
-            <Setter Property="Padding" Value="8,3"/>
+            <Setter Property="MinHeight" Value="52"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource FgMutedBrush}"/>
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="RecentFileBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                CornerRadius="6"
+                                Padding="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="RecentFileAccent"
+                                        Background="{DynamicResource AccentBrush}"
+                                        CornerRadius="2"
+                                        Opacity="0"
+                                        Margin="0,7,8,7"/>
+                                <ContentPresenter Grid.Column="1"
+                                                  Margin="8,7,8,7"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RecentFileBorder" Property="Background" Value="{DynamicResource PrimarySoftBrush}"/>
+                                <Setter TargetName="RecentFileAccent" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="RecentFileBorder" Property="Background" Value="{DynamicResource PrimarySoftBrush}"/>
+                                <Setter TargetName="RecentFileAccent" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="TextOnlyButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -94,7 +131,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
@@ -132,14 +169,14 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource HoverBgBrush}"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource HoverBorderBrush}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryLineBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource SelectionBgBrush}"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryLineBrush}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -167,12 +204,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
                                 <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource HoverBgBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
-                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
                                 <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource SelectionBgBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -199,15 +236,15 @@
 
         <DockPanel Grid.Row="0"
                    LastChildFill="True"
-                   Background="{DynamicResource PanelBgBrush}"
+                   Background="{DynamicResource AppBackgroundBrush}"
                    SnapsToDevicePixels="True">
             <Menu DockPanel.Dock="Top"
-                  Background="{DynamicResource PanelBgBrush}"
+                  Background="{DynamicResource SurfaceBrush}"
                   BorderBrush="{DynamicResource BorderBrush}"
                   BorderThickness="0,0,0,1"
-                  Foreground="{DynamicResource FgBrush}"
+                  Foreground="{DynamicResource TextPrimaryBrush}"
                   Padding="8,3">
-                <MenuItem Header="파일" Foreground="{DynamicResource FgBrush}">
+                <MenuItem Header="파일" Foreground="{DynamicResource TextPrimaryBrush}">
                     <MenuItem Header="파일 열기..." Command="{Binding OpenFileCommand}" InputGestureText="Ctrl+O"/>
                     <MenuItem Header="최근 파일" ItemsSource="{Binding RecentFilesList}">
                         <MenuItem.ItemContainerStyle>
@@ -224,18 +261,18 @@
                     <Separator Background="{DynamicResource BorderBrush}"/>
                     <MenuItem Header="종료" Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="편집 도구" Foreground="{DynamicResource FgBrush}">
+                <MenuItem Header="편집 도구" Foreground="{DynamicResource TextPrimaryBrush}">
                     <MenuItem Header="문서 검사" Command="{Binding ValidateActiveDocumentCommand}" InputGestureText="F5"/>
                     <MenuItem Header="수동 백업 만들기" Command="{Binding CreateBackupManualCommand}"/>
                     <MenuItem Header="백업 폴더 열기" Command="{Binding OpenBackupFolderCommand}"/>
                 </MenuItem>
-                <MenuItem Header="보기" Foreground="{DynamicResource FgBrush}">
+                <MenuItem Header="보기" Foreground="{DynamicResource TextPrimaryBrush}">
                     <MenuItem Header="어두운 화면" Command="{Binding ChangeThemeCommand}" CommandParameter="Dark" IsCheckable="True" IsChecked="{Binding IsDarkTheme}"/>
                     <MenuItem Header="밝은 화면" Command="{Binding ChangeThemeCommand}" CommandParameter="Light" IsCheckable="True" IsChecked="{Binding IsLightTheme}"/>
                 </MenuItem>
             </Menu>
 
-            <Grid Margin="18,10,18,10">
+            <Grid Margin="16,12,16,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -244,20 +281,26 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="icon/CE_64px.png"
-                               Width="24"
-                               Height="24"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                        <TextBlock Text="Config Editor"
-                                   Foreground="{DynamicResource FgBrush}"
+                        <Border Width="32"
+                                Height="32"                                
+                                CornerRadius="8"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center">
+                            <Image Source="icon/CE_64px.png"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                        <TextBlock Text="Z.C.E"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
                                    FontSize="18"
-                                   FontWeight="ExtraBold"
+                                   FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                     <TextBlock Text="JSON / INI 설정 파일 편집"
-                               Foreground="{DynamicResource FgMutedBrush}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
                                FontSize="12"
                                Margin="1,2,0,0"/>
                 </StackPanel>
@@ -287,12 +330,12 @@
                             ToolTip="현재 문서의 형식과 값을 검사합니다."/>
                     <Button Content="백업"
                             Command="{Binding CreateBackupManualCommand}"
-                            Style="{StaticResource ToolbarButtonStyle}"
+                            Style="{StaticResource AccentSoftToolbarButtonStyle}"
                             Margin="8,0,0,0"
                             ToolTip="현재 파일의 백업을 만듭니다."/>
                     <Button Content="파일 조사"
                             Command="{Binding InspectFilesCommand}"
-                            Style="{StaticResource PrimaryToolbarButtonStyle}"
+                            Style="{StaticResource AccentSoftToolbarButtonStyle}"
                             Margin="8,0,0,0"
                             ToolTip="폴더를 선택해 열 수 있는 설정 파일을 모두 열린 파일에 추가합니다."/>
                     <StackPanel Orientation="Horizontal"
@@ -304,9 +347,9 @@
                                      IsIndeterminate="True"
                                      VerticalAlignment="Center"
                                      Background="{DynamicResource InputBgBrush}"
-                                     Foreground="{DynamicResource AccentBrush}"/>
+                                     Foreground="{DynamicResource PrimaryBrush}"/>
                         <TextBlock Text="조사 중"
-                                   Foreground="{DynamicResource FgMutedBrush}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                    FontSize="11"
                                    Margin="6,0,0,0"
                                    VerticalAlignment="Center"/>
@@ -316,9 +359,9 @@
                 <StackPanel Grid.Column="2"
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
-                    <Border Style="{StaticResource StatusBadgeStyle}" Background="{DynamicResource SelectionBgBrush}">
+                    <Border Style="{StaticResource StatusBadgeStyle}" Background="{DynamicResource PrimarySoftBrush}">
                         <TextBlock Text="{Binding Documents.Count, StringFormat='열린 파일 {0}개'}"
-                                   Foreground="{DynamicResource FgBrush}"
+                                   Foreground="{DynamicResource PrimaryBrush}"
                                    FontWeight="SemiBold"/>
                     </Border>
                     <Border Style="{StaticResource StatusBadgeStyle}"
@@ -333,10 +376,10 @@
             </Grid>
         </DockPanel>
 
-        <Grid Grid.Row="1" Margin="18,0,18,0">
+        <Grid Grid.Row="1" Margin="16,0,16,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="360" MinWidth="300"/>
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*" MinWidth="520"/>
             </Grid.ColumnDefinitions>
 
@@ -346,7 +389,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="14">
+                    <Border Height="3"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource IconGradientBrush}"
+                            CornerRadius="8,8,0,0"
+                            Opacity="0.85"/>
+
+                    <Grid Grid.Row="0" Margin="16">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -363,17 +412,18 @@
                             <TextBlock Text="{Binding Documents.Count, StringFormat='{}{0}개'}"
                                        DockPanel.Dock="Right"
                                        HorizontalAlignment="Right"
-                                       Foreground="{DynamicResource AccentBrush}"
+                                       Foreground="{DynamicResource PrimaryBrush}"
                                        FontWeight="SemiBold"/>
                         </DockPanel>
 
                         <Grid Grid.Row="1">
                             <TextBlock Text="아직 열린 파일이 없습니다."
-                                       Foreground="{DynamicResource FgMutedBrush}"
+                                       Foreground="{DynamicResource TextMutedBrush}"
                                        FontSize="12"
                                        TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
+                                       VerticalAlignment="Top"
                                        HorizontalAlignment="Center"
+                                       Margin="0,24,0,0"
                                        Visibility="{Binding HasDocuments, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                             <ListBox ItemsSource="{Binding Documents}"
@@ -402,7 +452,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Text="{Binding FileName}"
-                                                           Foreground="{DynamicResource FgBrush}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"
                                                            FontWeight="SemiBold"
                                                            TextTrimming="CharacterEllipsis"
                                                            ToolTip="{Binding FilePath}"/>
@@ -436,14 +486,15 @@
                         <Button Grid.Row="2"
                                 Content="파일 열기"
                                 Command="{Binding OpenFileCommand}"
-                                Style="{StaticResource ToolbarButtonStyle}"
+                                Style="{StaticResource SecondaryButtonStyle}"
                                 HorizontalAlignment="Stretch"
-                                Margin="0,10,0,0"/>
+                                Height="36"
+                                Margin="0,12,0,0"/>
 
                         <Border Grid.Row="3"
                                 Background="{DynamicResource BorderBrush}"
                                 Height="1"
-                                Margin="0,12,0,10"
+                                Margin="0,16,0,12"
                                 Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                         <DockPanel Grid.Row="4"
@@ -455,7 +506,7 @@
                             <TextBlock Text="{Binding RecentFilesList.Count, StringFormat='{}{0}개'}"
                                        DockPanel.Dock="Right"
                                        HorizontalAlignment="Right"
-                                       Foreground="{DynamicResource FgMutedBrush}"
+                                       Foreground="{DynamicResource TextMutedBrush}"
                                        FontSize="11"/>
                         </DockPanel>
 
@@ -469,9 +520,20 @@
                                         <Button Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource RecentFileButtonStyle}"
+                                                Margin="0,0,0,4"
                                                 ToolTip="{Binding}">
-                                            <TextBlock Text="{Binding}"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Converter={StaticResource PathFileNameConverter}}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                                           FontSize="12"
+                                                           FontWeight="SemiBold"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Converter={StaticResource PathFolderConverter}}"
+                                                           Foreground="{DynamicResource TextMutedBrush}"
+                                                           FontSize="11"
+                                                           Margin="0,3,0,0"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
                                         </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -489,28 +551,58 @@
             <Border Grid.Column="2"
                     Style="{StaticResource PaneBorderStyle}"
                     Visibility="{Binding HasSelectedDocument, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
-                <Grid Margin="40">
+                <Grid>
+                    <Border Height="3"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource IconGradientBrush}"
+                            CornerRadius="8,8,0,0"
+                            Opacity="0.85"/>
+
+                    <Grid Margin="40">
                     <StackPanel HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                MaxWidth="520">
-                        <TextBlock Text="설정 파일을 열어 편집을 시작하세요"
-                                   Foreground="{DynamicResource FgBrush}"
-                                   FontSize="24"
-                                   FontWeight="ExtraBold"
+                                MaxWidth="500">
+                        <Grid Width="72"
+                              Height="72"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,18">
+                            <Ellipse Fill="{DynamicResource IconGradientBrush}"/>
+                            <Ellipse Fill="{DynamicResource IconGradientSoftBrush}"
+                                     Margin="5"
+                                     Opacity="0.22"/>
+                            <Ellipse Width="12"
+                                     Height="12"
+                                     Fill="{DynamicResource SurfaceBrush}"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Bottom"
+                                     Margin="0,0,8,8"/>
+                            <TextBlock Text="CE"
+                                       Foreground="White"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock Text="열린 설정 파일이 없습니다"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   FontSize="23"
+                                   FontWeight="SemiBold"
                                    TextAlignment="Center"/>
-                        <TextBlock Text="JSON, INI, CFG 파일을 열면 왼쪽에는 파일 목록과 구조가, 오른쪽에는 원문 편집기와 폼 편집기가 표시됩니다."
-                                   Foreground="{DynamicResource FgMutedBrush}"
+                        <TextBlock Text="JSON, INI, CFG 파일을 열어 구조 보기와 원문 편집을 함께 시작하세요."
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                    FontSize="14"
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
-                                   Margin="0,12,0,22"/>
+                                   LineHeight="20"
+                                   Margin="0,10,0,24"/>
                         <Button Content="파일 열기"
                                 Command="{Binding OpenFileCommand}"
                                 Style="{StaticResource PrimaryToolbarButtonStyle}"
                                 HorizontalAlignment="Center"
-                                MinWidth="140"
+                                MinWidth="148"
                                 ToolTip="편집할 설정 파일을 선택합니다."/>
                     </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -553,8 +645,14 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
+                        <Border Height="3"
+                                VerticalAlignment="Top"
+                                Background="{DynamicResource IconGradientBrush}"
+                                CornerRadius="8,8,0,0"
+                                Opacity="0.85"/>
+
                         <Grid Grid.Row="0"
-                              Background="{DynamicResource PanelBgBrush}"
+                              Background="{DynamicResource SurfaceBrush}"
                               Margin="16,12,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -572,7 +670,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="{Binding SelectedDocument.FileName}"
-                                           Foreground="{DynamicResource FgBrush}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
                                            FontSize="17"
                                            FontWeight="SemiBold"
                                            TextTrimming="CharacterEllipsis"/>
@@ -589,7 +687,7 @@
                                 <TextBlock Grid.Row="1"
                                            Grid.ColumnSpan="2"
                                            Text="{Binding SelectedDocument.FilePath}"
-                                           Foreground="{DynamicResource FgMutedBrush}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
                                            FontSize="12"
                                            Margin="0,3,0,0"
                                            TextTrimming="CharacterEllipsis"
@@ -606,7 +704,7 @@
                                         Padding="10,5"
                                         VerticalAlignment="Center">
                                     <TextBlock Text="{Binding SelectedDocument.Format, StringFormat='형식: {0}'}"
-                                               Foreground="{DynamicResource FgBrush}"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
                                                FontWeight="SemiBold"/>
                                 </Border>
                                 <Button Content="폴더 열기"
@@ -620,7 +718,7 @@
                         <TabControl x:Name="MainTabControl"
                                     Grid.Row="1"
                                     SelectionChanged="MainTabControl_SelectionChanged"
-                                    Background="{DynamicResource PanelBgBrush}"
+                                    Background="{DynamicResource SurfaceBrush}"
                                     BorderThickness="0"
                                     Margin="1,12,1,1">
                             <TabControl.Resources>
@@ -644,7 +742,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Grid Grid.Column="0"
-                                              Background="{DynamicResource PanelBgBrush}">
+                                              Background="{DynamicResource SurfaceBrush}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="*"/>
@@ -656,7 +754,7 @@
                                                 <TextBlock Text="{Binding SelectedDocument.Format, StringFormat='{}{0}', FallbackValue=''}"
                                                            DockPanel.Dock="Right"
                                                            HorizontalAlignment="Right"
-                                                           Foreground="{DynamicResource FgMutedBrush}"
+                                                           Foreground="{DynamicResource TextMutedBrush}"
                                                            FontSize="11"/>
                                             </DockPanel>
                                             <Border Grid.Row="1"
@@ -712,12 +810,12 @@
         </Grid>
 
         <StatusBar Grid.Row="2"
-                   Background="{DynamicResource PanelBgBrush}"
-                   Foreground="{DynamicResource FgMutedBrush}"
+                   Background="{DynamicResource SurfaceBrush}"
+                   Foreground="{DynamicResource TextSecondaryBrush}"
                    BorderBrush="{DynamicResource BorderBrush}"
                    BorderThickness="0,1,0,0"
                    Padding="8,4"
-                   Margin="0,18,0,0">
+                   Margin="0,16,0,0">
             <StatusBarItem>
                 <TextBlock Text="{Binding SelectedDocument.FilePath, FallbackValue='열린 파일 없음'}"
                            TextTrimming="CharacterEllipsis"
@@ -736,7 +834,7 @@
                                                        Foreground="{DynamicResource SuccessBrush}"
                                                        FontWeight="SemiBold"
                                                        Margin="0,0,6,0"/>
-                                            <TextBlock Text="문제가 없습니다" Foreground="{DynamicResource FgBrush}"/>
+                                            <TextBlock Text="문제가 없습니다" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </Setter.Value>
@@ -752,7 +850,7 @@
                                                                FontWeight="SemiBold"
                                                                Margin="0,0,6,0"/>
                                                     <TextBlock Text="{Binding ValidationResults.Count, StringFormat='{}{0}개 문제 발견'}"
-                                                               Foreground="{DynamicResource FgBrush}"/>
+                                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </Setter.Value>

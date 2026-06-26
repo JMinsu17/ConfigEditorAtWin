@@ -11,14 +11,24 @@
     <Color x:Key="SelectionBgColor">#262682</Color>
     <Color x:Key="SelectionInactiveBgColor">#202049</Color>
     
+    <Color x:Key="PrimaryColor">#6969B8</Color>
+    <Color x:Key="PrimaryHoverColor">#5D5DA8</Color>
+    <Color x:Key="PrimaryPressedColor">#4F4F91</Color>
+    <Color x:Key="PrimarySoftColor">#242450</Color>
+    <Color x:Key="PrimaryLineColor">#56568C</Color>
+
     <Color x:Key="AccentColor">#DA9274</Color>
     <Color x:Key="AccentHoverColor">#F0AA8D</Color>
+    <Color x:Key="AccentSoftColor">#3A2928</Color>
+    <Color x:Key="AccentSoftHoverColor">#4A302B</Color>
+    <Color x:Key="AccentLineColor">#7B5144</Color>
     <Color x:Key="SuccessColor">#79C6AE</Color>
     <Color x:Key="WarningColor">#DA9274</Color>
     <Color x:Key="ErrorColor">#F0717B</Color>
     
     <Color x:Key="FgColor">#F7F4F2</Color>
     <Color x:Key="FgMutedColor">#BEB8CF</Color>
+    <Color x:Key="FgSubtleColor">#8F89A5</Color>
 
     <!-- Brush Resources -->
     <SolidColorBrush x:Key="BgBrush" Color="{StaticResource BgColor}"/>
@@ -30,8 +40,33 @@
     <SolidColorBrush x:Key="SelectionBgBrush" Color="{StaticResource SelectionBgColor}"/>
     <SolidColorBrush x:Key="SelectionInactiveBgBrush" Color="{StaticResource SelectionInactiveBgColor}"/>
     
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+    <SolidColorBrush x:Key="PrimaryHoverBrush" Color="{StaticResource PrimaryHoverColor}"/>
+    <SolidColorBrush x:Key="PrimaryPressedBrush" Color="{StaticResource PrimaryPressedColor}"/>
+    <SolidColorBrush x:Key="PrimarySoftBrush" Color="{StaticResource PrimarySoftColor}"/>
+    <SolidColorBrush x:Key="PrimaryLineBrush" Color="{StaticResource PrimaryLineColor}"/>
+
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
     <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="{StaticResource AccentSoftColor}"/>
+    <SolidColorBrush x:Key="AccentSoftHoverBrush" Color="{StaticResource AccentSoftHoverColor}"/>
+    <SolidColorBrush x:Key="AccentLineBrush" Color="{StaticResource AccentLineColor}"/>
+    <LinearGradientBrush x:Key="IconGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource PrimaryColor}" Offset="0"/>
+        <GradientStop Color="#7B69B8" Offset="0.48"/>
+        <GradientStop Color="{StaticResource AccentColor}" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="IconGradientSoftBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource PrimarySoftColor}" Offset="0"/>
+        <GradientStop Color="{StaticResource AccentSoftColor}" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource BgColor}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource PanelBgColor}"/>
+    <SolidColorBrush x:Key="BorderStrongBrush" Color="{StaticResource HoverBorderColor}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource FgColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource FgMutedColor}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource FgSubtleColor}"/>
+    <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource HoverBgColor}"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
     <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>

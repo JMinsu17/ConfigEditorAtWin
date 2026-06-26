@@ -29,11 +29,11 @@
                 <!-- Header -->
                 <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,15" Margin="0,0,0,15">
                     <StackPanel>
-                        <TextBlock x:Name="NodePathText" Text="Root" Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="NodePathText" Text="Root" Foreground="{DynamicResource PrimaryBrush}" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,5"/>
                         <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="NodeNameText" Text="설정 항목" Foreground="{DynamicResource FgBrush}" FontSize="18" FontWeight="ExtraBold" VerticalAlignment="Center"/>
                             <TextBlock x:Name="ModifiedStarText" Text=" *" Foreground="{DynamicResource WarningBrush}" FontSize="18" FontWeight="Bold" Visibility="Collapsed" VerticalAlignment="Center"/>
-                            <Border x:Name="NodeTemplateTypeBadge" CornerRadius="3" Padding="5,2" Background="{DynamicResource AccentBrush}" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <Border x:Name="NodeTemplateTypeBadge" CornerRadius="3" Padding="5,2" Background="{DynamicResource PrimaryBrush}" Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock x:Name="NodeTemplateTypeText" Text="string" Foreground="White" FontSize="10" FontWeight="Bold"/>
                             </Border>
                         </StackPanel>

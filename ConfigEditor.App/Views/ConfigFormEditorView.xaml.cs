@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using ConfigEditor.App.ViewModels;
 using ConfigEditor.Core.Models;
 
@@ -87,32 +88,16 @@ public partial class ConfigFormEditorView : UserControl
         // Type Badge styling
         string typeStr = node.ValueType.ToString().ToLower();
         NodeTemplateTypeText.Text = typeStr;
-        switch (node.ValueType)
+        NodeTemplateTypeBadge.Background = node.ValueType switch
         {
-            case ConfigValueType.String:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#2980B9")!;
-                break;
-            case ConfigValueType.Integer:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#27AE60")!;
-                break;
-            case ConfigValueType.Float:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#16A085")!;
-                break;
-            case ConfigValueType.Boolean:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#8E44AD")!;
-                break;
-            case ConfigValueType.Object:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#D35400")!;
-                break;
-            case ConfigValueType.Array:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#C0392B")!;
-                break;
-            case ConfigValueType.Null:
-            case ConfigValueType.Unknown:
-            default:
-                NodeTemplateTypeBadge.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#7F8C8D")!;
-                break;
-        }
+            ConfigValueType.String => GetThemeBrush("PrimaryBrush"),
+            ConfigValueType.Integer => GetThemeBrush("AccentBrush"),
+            ConfigValueType.Float => GetThemeBrush("AccentHoverBrush"),
+            ConfigValueType.Boolean => GetThemeBrush("PrimaryHoverBrush"),
+            ConfigValueType.Object => GetThemeBrush("PrimaryPressedBrush"),
+            ConfigValueType.Array => GetThemeBrush("AccentHoverBrush"),
+            _ => GetThemeBrush("TextMutedBrush")
+        };
 
         // Modified and Revert Panel states
         ModifiedStarText.Visibility = node.IsModified ? Visibility.Visible : Visibility.Collapsed;
@@ -159,5 +144,10 @@ public partial class ConfigFormEditorView : UserControl
         {
             vm.SelectedNode.RevertCommand.Execute(null);
         }
+    }
+
+    private Brush GetThemeBrush(string resourceKey)
+    {
+        return TryFindResource(resourceKey) as Brush ?? Brushes.Transparent;
     }
 }
