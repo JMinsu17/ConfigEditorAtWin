@@ -16,9 +16,15 @@
     <None Remove="Fonts\*.otf" />
     <None Remove="icon\CE_64px.png" />
     <None Remove="icon\ConfigEditor.ico" />
+    <None Remove="icon\docs.png" />
+    <None Remove="icon\open-folder.png" />
+    <None Remove="icon\recent.png" />
     <Resource Include="Fonts\*.otf" />
     <Resource Include="icon\CE_64px.png" />
     <Resource Include="icon\ConfigEditor.ico" />
+    <Resource Include="icon\docs.png" />
+    <Resource Include="icon\open-folder.png" />
+    <Resource Include="icon\recent.png" />
   </ItemGroup>
 
   <PropertyGroup>

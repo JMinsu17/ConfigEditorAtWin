@@ -293,7 +293,7 @@
                                    VerticalAlignment="Center"
                                    RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Border>
-                        <TextBlock Text="Z.C.E"
+                        <TextBlock Text="J.C.E"
                                    Foreground="{DynamicResource TextPrimaryBrush}"
                                    FontSize="18"
                                    FontWeight="SemiBold"
@@ -406,9 +406,16 @@
                         </Grid.RowDefinitions>
 
                         <DockPanel Grid.Row="0" Margin="0,0,0,10">
-                            <TextBlock Text="열린 파일"
-                                       Style="{StaticResource SectionLabelTextStyle}"
-                                       VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="icon/open-folder.png"
+                                       Width="16"
+                                       Height="16"
+                                       Margin="0,0,6,0"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="열린 파일"
+                                           Style="{StaticResource SectionLabelTextStyle}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
                             <TextBlock Text="{Binding Documents.Count, StringFormat='{}{0}개'}"
                                        DockPanel.Dock="Right"
                                        HorizontalAlignment="Right"
@@ -500,9 +507,16 @@
                         <DockPanel Grid.Row="4"
                                    Margin="0,0,0,6"
                                    Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <TextBlock Text="최근 파일"
-                                       Style="{StaticResource SectionLabelTextStyle}"
-                                       VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="icon/recent.png"
+                                       Width="16"
+                                       Height="16"
+                                       Margin="0,0,6,0"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="최근 파일"
+                                           Style="{StaticResource SectionLabelTextStyle}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
                             <TextBlock Text="{Binding RecentFilesList.Count, StringFormat='{}{0}개'}"
                                        DockPanel.Dock="Right"
                                        HorizontalAlignment="Right"
@@ -665,16 +679,24 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{Binding SelectedDocument.FileName}"
+                                <Image Source="icon/docs.png"
+                                       Width="18"
+                                       Height="18"
+                                       Margin="0,1,8,0"
+                                       VerticalAlignment="Center"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding SelectedDocument.FileName}"
                                            Foreground="{DynamicResource TextPrimaryBrush}"
                                            FontSize="17"
                                            FontWeight="SemiBold"
                                            TextTrimming="CharacterEllipsis"/>
-                                <Border Grid.Column="1"
+                                <Border Grid.Column="2"
                                         Style="{StaticResource StatusBadgeStyle}"
                                         Background="{DynamicResource SelectionInactiveBgBrush}"
                                         Padding="8,3"
@@ -685,6 +707,7 @@
                                                FontWeight="SemiBold"/>
                                 </Border>
                                 <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
                                            Grid.ColumnSpan="2"
                                            Text="{Binding SelectedDocument.FilePath}"
                                            Foreground="{DynamicResource TextSecondaryBrush}"
